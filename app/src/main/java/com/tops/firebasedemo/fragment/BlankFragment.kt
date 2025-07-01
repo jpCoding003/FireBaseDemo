@@ -31,10 +31,9 @@ class BlankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.btnLogout.setOnClickListener {
             Firebase.auth.signOut()
-            findNavController().navigate(R.id.action_blankFragment_to_loginFragment)
+            findNavController().navigate(R.id.loginFragment)
         }
     }
 }

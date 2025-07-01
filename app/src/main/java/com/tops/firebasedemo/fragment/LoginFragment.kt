@@ -17,10 +17,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var auth : FirebaseAuth
     private lateinit var binding: FragmentLoginBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +43,7 @@ class LoginFragment : Fragment() {
         var password = binding.etPassword.text.toString()
         auth.signInWithEmailAndPassword(email,password).addOnCompleteListener { task->
             if (task.isSuccessful){
-                findNavController().navigate(R.id.blankFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_addDataFragment)
             }else{
                 Toast.makeText(requireContext(),
                     "Authentication failed.",Toast.LENGTH_SHORT,).show()

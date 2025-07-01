@@ -52,7 +52,7 @@ class SignUpFragment : Fragment() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                findNavController().navigate(R.id.blankFragment)
+                findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
             } else {
                 Toast.makeText(requireContext(),
                     "Authentication failed.", Toast.LENGTH_SHORT,
