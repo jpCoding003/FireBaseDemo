@@ -23,14 +23,6 @@ class AddDataFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-
-    private var firstname = binding.etFirstName.text.toString().trim()
-    private var lastname = binding.etLastName.text.toString().trim()
-    private var birthdate = binding.etDateOfBirth.text.toString().trim()
-    private var address = binding.etAddress.text.toString().trim()
-    private var email = binding.etEmail.text.toString().trim()
-    private var phonenumber = binding.etContactNumber.text.toString().trim()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,8 +34,15 @@ class AddDataFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
 
         binding.btnSubmit.setOnClickListener {
+             var firstname = binding.etFirstName.text.toString().trim()
+             var lastname = binding.etLastName.text.toString().trim()
+             var birthdate = binding.etDateOfBirth.text.toString().trim()
+             var address = binding.etAddress.text.toString().trim()
+             var email = binding.etEmail.text.toString().trim()
+             var phonenumber = binding.etContactNumber.text.toString().trim()
 
             var personalData = mutableMapOf(
                 "firstname" to firstname,
@@ -55,24 +54,21 @@ class AddDataFragment : Fragment() {
             )
 
             db.collection("users").add(personalData)
-                .addOnSuccessListener {
-
+                .addOnSuccessListener {documentReference ->
                 Toast.makeText(context, "Data Added Succesfully ", Toast.LENGTH_LONG).show()
-                    Log.i(TAG, " Data Uploaded==> ${personalData}")
-
-                }.addOnFailureListener {
-
+                    Log.i(TAG, "ID: ${documentReference.id} Data Uploaded==> ${personalData}")
+                }.addOnFailureListener {e->
+                    Log.i(TAG, "Failed to Upload")
+                    Log.w(TAG, "Error adding document", e)
                     Toast.makeText(context, "Data Upload Failed  ", Toast.LENGTH_LONG).show()
-
                 }
 
-            findNavController().navigate(R.id.action_loginFragment_to_addDataFragment)
+            findNavController().navigate(R.id.action_addDataFragment_to_blankFragment)
         }
 
         binding.btnlogout.setOnClickListener {
             Firebase.auth.signOut()
             findNavController().navigate(R.id.action_addDataFragment_to_loginFragment)
-            activity?.finish()
         }
     }
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp"
     tools:context=".fragment.BlankFragment"
     android:orientation="vertical">
@@ -13,10 +14,22 @@
         android:src="@mipmap/ic_launcher" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogout"
+        android:id="@+id/btnAddData"
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"/>
+        app:backgroundTint="@color/black"
+        android:textSize="20sp"
+        android:text="Add User"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMessaging"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:backgroundTint="#ACA8A8"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:text="Messaging"/>
 
 </LinearLayout>
