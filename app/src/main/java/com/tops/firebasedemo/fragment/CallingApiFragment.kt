@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tops.firebasedemo.R
+import com.tops.firebasedemo.adapter.MyAdapter
 import com.tops.firebasedemo.databinding.FragmentCallingApiBinding
 import com.tops.firebasedemo.model.Recipe
+import com.tops.firebasedemo.model.RecipeRoot
 import com.tops.firebasedemo.services.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +20,10 @@ import retrofit2.Response
 
 
 class CallingApiFragment : Fragment() {
+
     private lateinit var binding: FragmentCallingApiBinding
+    private lateinit var adapter: MyAdapter
+
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //
@@ -43,30 +49,34 @@ class CallingApiFragment : Fragment() {
     }
 
     private fun getResponseData() {
-        val call: Call<Recipe> = RetrofitClient.service.getData()
-        call.enqueue(object : Callback<Recipe>{
-            override fun onResponse(
-                call: Call<Recipe>,
-                response: Response<Recipe>
-            ) {
-                if (response.isSuccessful){
-                    val apibody: Recipe? = response.body()
-//                    seperateData(apibody)
+        val call: Call<RecipeRoot> = RetrofitClient.service.getData()
 
-                    binding.tv1.text= apibody?.name
-                    binding.tv2.setText(apibody?.id.toString())
-                    Log.i("RESPONSE", "DATA== $apibody")
+        call.enqueue(object : Callback<RecipeRoot>{
+            override fun onResponse(
+                call: Call<RecipeRoot?>,
+                response: Response<RecipeRoot?>
+            ) {
+                if (response.isSuccessful) {
+                    // ✅ Safely extract list of recipes from RecipeRoot
+                    val recipeList: MutableList<Recipe> = response.body()?.recipes?.toMutableList() ?: mutableListOf()
+
+                    // ✅ Set up RecyclerView with the adapter
+                    adapter = MyAdapter(recipeList)
+                    binding.rvData.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvData.adapter = adapter
+
+                    Log.i("RESPONSE", "Ingredients: $recipeList")
                 }
             }
 
             override fun onFailure(
-                call: Call<Recipe>,
+                call: Call<RecipeRoot?>,
                 t: Throwable
             ) {
                 Log.i("Error", t.message.toString())
             }
-
         })
+
     }
 
 }

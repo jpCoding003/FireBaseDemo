@@ -7,6 +7,6 @@ import retrofit2.http.GET
 
 interface RetrofitService {
 
-    @GET("/recipes/1")
-    fun getData(): Call<Recipe>
+    @GET("/recipes")
+    fun getData(): Call<RecipeRoot>
 }
