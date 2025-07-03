@@ -40,6 +40,10 @@ class BlankFragment : Fragment() {
             findNavController().navigate(R.id.action_blankFragment_to_addDataFragment)
         }
 
+        binding.btnMessaging.setOnClickListener {
+            findNavController().navigate(R.id.action_blankFragment_to_callingApiFragment)
+        }
+
 
 
         val db = Firebase.firestore

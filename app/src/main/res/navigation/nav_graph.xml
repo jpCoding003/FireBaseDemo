@@ -52,6 +52,18 @@
         <action
             android:id="@+id/action_blankFragment_to_addDataFragment"
             app:destination="@id/addDataFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_callingApiFragment"
+            app:destination="@id/callingApiFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/callingApiFragment"
+        android:name="com.tops.firebasedemo.fragment.CallingApiFragment"
+        android:label="fragment_calling_api"
+        tools:layout="@layout/fragment_calling_api" >
+        <action
+            android:id="@+id/action_callingApiFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
 
 
