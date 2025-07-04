@@ -5,21 +5,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-//    var service: RetrofitService? =null
-//
-//    fun getInstance(): RetrofitService{
-//        if (service==null){
-//            val retrofit: Retrofit= Retrofit.Builder()
-//                .baseUrl("https://dummyjson.com/")
-//                .addConverterFactory(GsonConverterFactory().create())
-//                .build()
-//
-//            service = retrofit.create(RetrofitService::class.java)
-//        }
-//        return service!!
-//
-//    }
-
     private const val BASE_URL = "https://dummyjson.com/"
 
     // Built only once and reused

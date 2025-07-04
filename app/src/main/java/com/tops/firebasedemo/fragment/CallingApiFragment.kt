@@ -24,11 +24,6 @@ class CallingApiFragment : Fragment() {
     private lateinit var binding: FragmentCallingApiBinding
     private lateinit var adapter: MyAdapter
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,10 +40,9 @@ class CallingApiFragment : Fragment() {
         binding.BackToHome.setOnClickListener {
             findNavController().navigate(R.id.action_callingApiFragment_to_blankFragment)
         }
-
     }
-
     private fun getResponseData() {
+        binding.progressBar.visibility = View.VISIBLE
         val call: Call<RecipeRoot> = RetrofitClient.service.getData()
 
         call.enqueue(object : Callback<RecipeRoot>{
@@ -61,9 +55,13 @@ class CallingApiFragment : Fragment() {
                     val recipeList: MutableList<Recipe> = response.body()?.recipes?.toMutableList() ?: mutableListOf()
 
                     // ✅ Set up RecyclerView with the adapter
-                    adapter = MyAdapter(recipeList)
+                    adapter = MyAdapter(recipeList){recipe, i ->
+                        adapter.deleteItem( i )
+                    }
+
                     binding.rvData.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvData.adapter = adapter
+                    binding.progressBar.visibility = View.GONE
 
                     Log.i("RESPONSE", "Ingredients: $recipeList")
                 }
