@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tops.firebasedemo.R
+import com.tops.firebasedemo.RecipeStore
 import com.tops.firebasedemo.adapter.MyAdapter
 import com.tops.firebasedemo.databinding.FragmentCallingApiBinding
 import com.tops.firebasedemo.model.Recipe
@@ -17,7 +18,6 @@ import com.tops.firebasedemo.services.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class CallingApiFragment : Fragment() {
 
@@ -35,7 +35,20 @@ class CallingApiFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getResponseData()
+        // ✅ Set up RecyclerView with the adapter
+        adapter = MyAdapter(RecipeStore.recipeList){ recipe, i ->
+            adapter.deleteItem( i )
+        }
+        binding.rvData.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvData.adapter = adapter
+
+        // Only fetch from API if list is empty
+        if (RecipeStore.recipeList.isEmpty()) {
+            getResponseData()
+        } else {
+            binding.progressBar.visibility = View.GONE
+            adapter.notifyDataSetChanged()
+        }
 
         binding.BackToHome.setOnClickListener {
             findNavController().navigate(R.id.action_callingApiFragment_to_blankFragment)
@@ -52,18 +65,13 @@ class CallingApiFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     // ✅ Safely extract list of recipes from RecipeRoot
-                    val recipeList: MutableList<Recipe> = response.body()?.recipes?.toMutableList() ?: mutableListOf()
+                   // val recipeList: MutableList<Recipe> = response.body()?.recipes?.toMutableList() ?: mutableListOf()
 
-                    // ✅ Set up RecyclerView with the adapter
-                    adapter = MyAdapter(recipeList){recipe, i ->
-                        adapter.deleteItem( i )
-                    }
-
-                    binding.rvData.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvData.adapter = adapter
+                    RecipeStore.recipeList.clear()
+                    RecipeStore.recipeList.addAll(response.body()?.recipes ?: mutableListOf())
+                    adapter.notifyDataSetChanged()
                     binding.progressBar.visibility = View.GONE
-
-                    Log.i("RESPONSE", "Ingredients: $recipeList")
+                    Log.i("RESPONSE", "Ingredients: ${RecipeStore.recipeList}")
                 }
             }
 

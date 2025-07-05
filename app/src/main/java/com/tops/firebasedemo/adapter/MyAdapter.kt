@@ -8,7 +8,7 @@ import com.tops.firebasedemo.databinding.ItemRowBinding
 import com.tops.firebasedemo.model.Recipe
 import com.tops.firebasedemo.model.RecipeRoot
 
-class MyAdapter(private val food: MutableList<Recipe>, private val onDeleteClick: (Recipe, Int)-> Unit): RecyclerView.Adapter<MyAdapter.FoodViewHolder>() {
+class MyAdapter(private val recipeList: MutableList<Recipe>, private val onDeleteClick: (Recipe, Int)-> Unit): RecyclerView.Adapter<MyAdapter.FoodViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -21,7 +21,7 @@ class MyAdapter(private val food: MutableList<Recipe>, private val onDeleteClick
         holder: FoodViewHolder,
         position: Int
     ) {
-        val foodItem = food[position]
+        val foodItem = recipeList[position]
         holder.binding.itemID.text = foodItem.id.toString()
         holder.binding.itemName.text = foodItem.name
         // You can also display foodItem.ingredients.joinToString(", ") if needed
@@ -37,13 +37,13 @@ class MyAdapter(private val food: MutableList<Recipe>, private val onDeleteClick
     }
 
     fun deleteItem( position: Int) {
-        food.removeAt(position)
+        recipeList.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, food.size - position)
+        notifyItemRangeChanged(position, recipeList.size - position)
     }
 
     override fun getItemCount(): Int {
-    return food.size
+    return recipeList.size
     }
 
     class FoodViewHolder(val binding: ItemRowBinding): RecyclerView.ViewHolder(binding.root) {
