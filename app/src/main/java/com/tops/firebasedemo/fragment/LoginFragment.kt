@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -44,6 +45,8 @@ class LoginFragment : Fragment() {
         auth.signInWithEmailAndPassword(email,password).addOnCompleteListener { task->
             if (task.isSuccessful){
                 findNavController().navigate(R.id.action_loginFragment_to_addDataFragment)
+
+
             }else{
                 Toast.makeText(requireContext(),
                     "Authentication failed.",Toast.LENGTH_SHORT,).show()

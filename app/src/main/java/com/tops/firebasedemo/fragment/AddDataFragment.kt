@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -35,6 +36,8 @@ class AddDataFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
+
+        Snackbar.make(binding.root,"Wellcome ${auth.currentUser}", Snackbar.LENGTH_LONG).show()
 
         binding.btnSubmit.setOnClickListener {
              var firstname = binding.etFirstName.text.toString().trim()
